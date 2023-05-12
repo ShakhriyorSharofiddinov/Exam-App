@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "732242458762",
+    "project_id": "exam-results-1c119",
+    "storage_bucket": "exam-results-1c119.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732242458762:android:2f196bfa34825b7e825573",
+        "android_client_info": {
+          "package_name": "uz.sharofiddinov.exam_result"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732242458762-tefn41aa3n4p4l00i4v61schu5dvhs6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJbN4XWxfcAfUCnuOL5wuCvWq2r84EXDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732242458762-tefn41aa3n4p4l00i4v61schu5dvhs6c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
