@@ -1,10 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:exam_result/LogInParol/login.dart';
-import 'package:exam_result/Core/size_config.dart';
+import 'package:exam_result/login/pages/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../home.dart';
+import '../core/size_config.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class SplashScreen extends StatelessWidget {
         splash: Lottie.asset(
           "assets/splash_screen.json",
         ),
-        nextScreen: const LoginScreen(),
+        nextScreen: const AuthPage(),
       ),
     );
   }

@@ -1,30 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:exam_result/Admin/admin_home.dart';
-import 'package:exam_result/LogInParol/services/auth_service.dart';
-import 'package:exam_result/Student/student_home.dart';
-import 'package:exam_result/Teacher/teacher_home.dart';
-import 'package:exam_result/home.dart';
-import 'package:exam_result/Core/size_config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Core/constants_Login.dart';
-import '../user.dart';
+import '../../core/constants_Login.dart';
+import '../../core/size_config.dart';
 import 'forgot_pass.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _loginController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
   bool showPassword = false;
-  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
-  late final List<QuerySnapshot<User>> usersLogInAndPassword;
 
   final emailPattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -36,25 +28,98 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void login() {
     if (_formKey.currentState!.validate()) {
-      isLoading = true;
-      setState(() {});
-      Future.delayed(const Duration(seconds: 2), ()
-      {
-        isLoading = false;
-      });
+      signUserIn();
     }
+  }
+
+  // sign user in method
+  void signUserIn() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
+    // try sign in
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // pop the loading circle
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      // pop the loading circle
+      Navigator.pop(context);
+      // WRONG EMAIL
+      if (e.code == 'user-not-found') {
+        // show error to user
+        wrongEmailMessage();
+      }
+
+      // WRONG PASSWORD
+      else if (e.code == 'wrong-password') {
+        // show error to user
+        wrongPasswordMessage();
+      }
+    }
+  }
+
+  // wrong email message popup
+  void wrongEmailMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.blue,
+          title: const Center(
+            child: Text(
+              'Notogri email',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  // wrong password message popup
+  void wrongPasswordMessage() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.blue,
+          title: const Center(
+            child: Text(
+              'Notogri parol',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: bgColor,
-        body: SingleChildScrollView(
-          primary: false,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding:
-          EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize! * 3),
+              EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize! * 3),
           child: Column(
             children: [
               SizedBox(
@@ -68,13 +133,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     TextFormField(
-                      controller: _loginController,
+                      controller: emailController,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please Enter Your email';
+                          return 'Emailingizni kiriting';
                         }
-                        if (!validateEmail(_loginController.text)) {
-                          return 'Please Enter Valid Email';
+                        if (!validateEmail(emailController.text)) {
+                          return 'Yaroqli elektron pochta manzilini kiriting';
                         }
                         return null;
                       },
@@ -85,10 +150,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           filled: true,
                           fillColor: textFieldColor,
                           isDense: true,
-                          contentPadding: EdgeInsets.all(8),
-                          hintText: 'Enter your email',
-                          hintStyle: const TextStyle(
-                              color: Colors.black54),
+                          hintText: 'Email',
+                          hintStyle: const TextStyle(color: Colors.black54),
                           prefixIcon: const Icon(
                             Icons.email,
                             color: Colors.blue,
@@ -101,14 +164,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: SizeConfig.defaultSize! * 1.5),
                     TextFormField(
-                      controller: _passwordController,
+                      controller: passwordController,
                       obscureText: showPassword ? false : true,
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please Enter Your Password';
+                          return 'Parolingizni kiriting';
                         }
                         if (value.length < 6) {
-                          return 'Password must be at least 8 characters';
+                          return 'Parol kamida 6 ta belgidan iborat bo''lishi kerak';
                         }
                         return null;
                       },
@@ -117,8 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         filled: true,
                         fillColor: textFieldColor,
                         isDense: true,
-                        contentPadding: EdgeInsets.all(8),
-                        hintText: 'Enter your password',
+                        hintText: 'Parol',
                         hintStyle: const TextStyle(color: Colors.black54),
                         prefixIcon: const Icon(
                           Icons.lock,
@@ -156,7 +218,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     builder: (_) => ForgotPassScreen()));
                           },
                           child: const Text(
-                            "Forgot your password?",
+                            "Parolni unutdingizmi?",
                             // "Next",
                             textAlign: TextAlign.right,
                             style: TextStyle(color: iconTextColor),
@@ -164,50 +226,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: SizeConfig.defaultSize! * 4),
+                    SizedBox(height: SizeConfig.defaultSize! * 8),
                     MaterialButton(
                       minWidth: double.infinity,
-                      height: SizeConfig.defaultSize! * 4,
+                      height: SizeConfig.defaultSize! * 5,
                       color: iconTextColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
-                      onPressed: () async {
+                      onPressed: () {
                         login();
-                        // for (var element in LoginService().getUsersLogIn()) {
-                        //   if (element.login == _loginController &&
-                        //       element.password == _passwordController) {
-                        //     switch (element.role) {
-                        //       case "admin":
-                        //         {
-                        //           Navigator.pushReplacement(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (_) => AdminHomeScreen()));
-                        //         }
-                        //         break;
-                        //       case "teacher":
-                        //         {
-                        //           Navigator.pushReplacement(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (_) => TeacherHomeScreen()));
-                        //         }
-                        //         break;
-                        //       case "student":
-                        //         {
-                        //           Navigator.pushReplacement(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (_) => StudentHomeScreen()));
-                        //         }
-                        //         break;
-                        //     }
-                        //   }
-                        // }
-                      // print(LoginService().getUsersLogIn()[0].role);
                       },
                       child: Text(
-                        "Login",
+                        "Tizimga kirish",
                         style: TextStyle(
                             color: bgColor,
                             fontSize: SizeConfig.defaultSize! * 1.8),
