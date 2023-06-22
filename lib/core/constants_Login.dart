@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 const Color bgColor = Colors.white;
 const Color iconTextColor = Colors.blue;
 Color buttonColor = Colors.blue.withOpacity(0.2);
-Color textFieldColor = Colors.grey.shade200;
+Color textFieldColor = Colors.grey.shade800;
 
 class AppConstants {
   AppConstants._();

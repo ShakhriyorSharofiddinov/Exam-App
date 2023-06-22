@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../admin/admin_home.dart';
-import '../../student/student_home.dart';
-import '../../teacher/teacher_home.dart';
+import '../../student/student.dart';
+import '../../teacher/teacher.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 
@@ -22,10 +22,10 @@ class AuthPage extends StatelessWidget {
                 return AdminHomeScreen();
               }
               case "1": {
-                return TeacherHomeScreen();
+                return TeacherScreen();
               }
               default: {
-                return StudentHomeScreen();
+                return StudentScreen();
               }
             }
             return LogInHomePage();

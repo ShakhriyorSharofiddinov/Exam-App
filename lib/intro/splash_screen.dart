@@ -1,5 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:exam_result/login/pages/auth_page.dart';
+import 'package:exam_result/login/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
     SizeConfig().init(context);
     return SafeArea(
       child: AnimatedSplashScreen(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         splashIconSize: SizeConfig.defaultSize! * 25,
         splash: Lottie.asset(
           "assets/splash_screen.json",

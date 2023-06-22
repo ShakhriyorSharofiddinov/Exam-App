@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/constants_Login.dart';
 import '../../core/size_config.dart';
 import 'forgot_pass.dart';
@@ -81,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.blue,
           title: const Center(
             child: Text(
-              'Notogri email',
+              'No\'togri email',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -102,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.blue,
           title: const Center(
             child: Text(
-              'Notogri parol',
+              'No\'togri parol',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -115,18 +114,22 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: SafeArea(
         child: SingleChildScrollView(
           padding:
               EdgeInsets.symmetric(horizontal: SizeConfig.defaultSize! * 3),
           child: Column(
             children: [
-              SizedBox(
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30)
+                ),
                   width: SizeConfig.screenWidth,
-                  height: SizeConfig.defaultSize! * 30,
+                  height: SizeConfig.defaultSize! * 35,
                   child: const Image(
-                    image: AssetImage("assets/loginLogo.jpg"),
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/loginLogo.png"),
                   )),
               Form(
                 key: _formKey,
@@ -144,14 +147,14 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       style: const TextStyle(
-                        color: Colors.black54,
+                        color: Colors.white,
                       ),
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: textFieldColor,
                           isDense: true,
                           hintText: 'Email',
-                          hintStyle: const TextStyle(color: Colors.black54),
+                          hintStyle: const TextStyle(color: Colors.white),
                           prefixIcon: const Icon(
                             Icons.email,
                             color: Colors.blue,
@@ -175,13 +178,13 @@ class _LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
-                      style: const TextStyle(color: Colors.black54),
+                      style: const TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: textFieldColor,
                         isDense: true,
                         hintText: 'Parol',
-                        hintStyle: const TextStyle(color: Colors.black54),
+                        hintStyle: const TextStyle(color: Colors.white),
                         prefixIcon: const Icon(
                           Icons.lock,
                           color: iconTextColor,
@@ -194,8 +197,8 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Icon(
                             showPassword
-                                ? Icons.visibility_off
-                                : Icons.remove_red_eye,
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                             color: iconTextColor,
                           ),
                         ),
@@ -206,27 +209,27 @@ class _LoginPageState extends State<LoginPage> {
                         focusColor: bgColor,
                       ),
                     ),
-                    SizedBox(
-                      width: SizeConfig.screenWidth,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => ForgotPassScreen()));
-                          },
-                          child: const Text(
-                            "Parolni unutdingizmi?",
-                            // "Next",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(color: iconTextColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: SizeConfig.defaultSize! * 8),
+                    // SizedBox(
+                    //   width: SizeConfig.screenWidth,
+                    //   child: Align(
+                    //     alignment: Alignment.centerRight,
+                    //     child: TextButton(
+                    //       onPressed: () {
+                    //         Navigator.push(
+                    //             context,
+                    //             MaterialPageRoute(
+                    //                 builder: (_) => ForgotPassScreen()));
+                    //       },
+                    //       child: const Text(
+                    //         "Parolni unutdingizmi?",
+                    //         // "Next",
+                    //         textAlign: TextAlign.right,
+                    //         style: TextStyle(color: Colors.red),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(height: SizeConfig.defaultSize! * 12),
                     MaterialButton(
                       minWidth: double.infinity,
                       height: SizeConfig.defaultSize! * 5,
@@ -234,6 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                       onPressed: () {
+                        // createAlbum();
                         login();
                       },
                       child: Text(

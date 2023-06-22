@@ -21,9 +21,9 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
       builder: (context, snapshot) {
         return SafeArea(
           child: Scaffold(
-            backgroundColor: bgColor,
+            backgroundColor: Colors.black,
             appBar: AppBar(
-              backgroundColor: bgColor,
+              backgroundColor: Colors.black,
               leading: IconButton(
                 splashRadius: 20,
                 highlightColor: buttonColor,
@@ -53,7 +53,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
                         width: SizeConfig.screenWidth,
                         height: SizeConfig.defaultSize! * 30,
                         child: const Image(
-                          image: AssetImage("assets/forgetPassword.jpg"),
+                          image: AssetImage("assets/forgetPassword.png"),
                         )),
                   ],
                 ),
